@@ -1,17 +1,20 @@
-import { Box, Button, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, TextField } from "@mui/material"
+import { Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper } from "@mui/material"
 import { useCallback } from "react"
 import { Service, Year } from "../../model"
 import { CheckCircle } from "@mui/icons-material"
 import { YearSelect } from "./YearSelect"
+import { ServiceInput } from "./ServiceInput"
 
 interface Props {
-  year: Year
+  selectedYear: Year
+  years: Year[]
   onYearChange: (year: Year) => void
   services: Service[]
   onServiceSelectToggle: (service: Service) => void
+  onServiceAdd: (serviceName: string) => void
 }
 
-export const AvailableServicesList = ({ year, onServiceSelectToggle, onYearChange, services }: Props) => {
+export const AvailableServicesList = ({ selectedYear, years, onServiceSelectToggle, onYearChange, services, onServiceAdd }: Props) => {
   const canSelectService = useCallback((service: Service) => {
     const dependency = services.find(({ name }) => service.dependecy === name)
     return dependency ? dependency.selected : true
@@ -19,12 +22,12 @@ export const AvailableServicesList = ({ year, onServiceSelectToggle, onYearChang
 
   return (
     <Paper sx={{ flex: 1, padding: 4 }}>
-      <YearSelect onChange={onYearChange} />
+      <YearSelect years={years} onChange={onYearChange} />
       <List>
         {services.map((service) => (
           <ListItem key={service.name}>
             <ListItemButton disabled={!canSelectService(service)} onClick={() => onServiceSelectToggle(service)}>
-              <ListItemText primary={service.name} secondary={`${service.prices[year]} PLN`} />
+              <ListItemText primary={service.name} secondary={`${service.prices[selectedYear]} PLN`} />
               {service.selected && (
                 <ListItemIcon>
                   <CheckCircle color="primary" />
@@ -35,12 +38,7 @@ export const AvailableServicesList = ({ year, onServiceSelectToggle, onYearChang
         ))}
       </List>
       <Divider sx={{ marginTop: 4, marginBottom: 4 }}/>
-      <Box sx={{ display: 'flex', gap: 2 }}>
-        <TextField label="Nazwa usługi" sx={{ flex: 1 }} />
-        <Button>
-          Dodaj usługę
-        </Button>
-      </Box>
+      <ServiceInput onServiceAdd={onServiceAdd} />
     </Paper>
   )
 }

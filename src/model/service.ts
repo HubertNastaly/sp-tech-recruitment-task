@@ -1,6 +1,6 @@
 export type Year = number
 export type Price = number
-export type ServiceName = 'Internet' | 'Telewizja' | 'Abonament telefoniczny' | 'Dekoder 4K'
+export type ServiceName = string
 
 export interface Service {
   name: ServiceName

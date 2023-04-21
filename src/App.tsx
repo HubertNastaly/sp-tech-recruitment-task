@@ -1,16 +1,16 @@
 import { Box, Container } from "@mui/material"
 import { AvailableServicesList } from "./components/AvailableServicesList"
 import { SelectedServicesList } from "./components/SelectedServicesList"
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import { DEFAULT_SERVICES, Service, Year } from "./model"
 import { DEFAULT_YEARS } from "./components/AvailableServicesList/YearSelect"
 
 function App() {
+  const [years] = useState(DEFAULT_YEARS)
   const [selectedYear, setSelectedYear] = useState<Year>(DEFAULT_YEARS[0])
   const [services, setServices] = useState(DEFAULT_SERVICES)
-  
 
-  function toggleSelect(toggledService: Service) {
+  const toggleSelect = useCallback((toggledService: Service) => {
     const newServices = services.map(service => {
       if (service.name === toggledService.name) {
         return { ...service, selected: !service.selected }
@@ -21,12 +21,28 @@ function App() {
       return service
     })
     setServices(newServices)
-  }
+  }, [setServices, services])
+
+  const addService = useCallback((serviceName: string) => {
+    const newService: Service = {
+      name: serviceName,
+      prices: Object.fromEntries(years.map(year => [year, 0])),
+      selected: false
+    }
+    setServices(services => [...services, newService])
+  }, [setServices])
 
   return (
     <Container maxWidth="lg">
       <Box sx={{ maxHeight: '100vh', width: '100%', marginTop: 8, display: 'flex', gap: 8 }}>
-        <AvailableServicesList year={selectedYear} onYearChange={setSelectedYear} services={services} onServiceSelectToggle={toggleSelect} />
+        <AvailableServicesList
+          selectedYear={selectedYear}
+          years={years}
+          onYearChange={setSelectedYear}
+          services={services}
+          onServiceSelectToggle={toggleSelect}
+          onServiceAdd={addService}
+        />
         <SelectedServicesList year={selectedYear} services={services} />
       </Box>
     </Container>

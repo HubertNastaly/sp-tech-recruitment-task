@@ -1,15 +1,14 @@
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material"
-import { useState } from "react"
 import { Year } from "../../model"
 
 export const DEFAULT_YEARS: Year[] = [2023, 2024, 2025]
 
 interface Props {
+  years: Year[]
   onChange: (year: Year) => void
 }
 
-export const YearSelect = ({ onChange }: Props) => {
-  const [years] = useState(DEFAULT_YEARS)
+export const YearSelect = ({ onChange, years }: Props) => {
 
   function handleChange (event: SelectChangeEvent<Year>) {
     onChange(event.target.value as Year)
