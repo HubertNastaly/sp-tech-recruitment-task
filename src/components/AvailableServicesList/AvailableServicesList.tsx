@@ -27,7 +27,7 @@ export const AvailableServicesList = ({ year, onServiceSelectToggle, onYearChang
               <ListItemText primary={service.name} secondary={`${service.prices[year]} PLN`} />
               {service.selected && (
                 <ListItemIcon>
-                  <CheckCircle />
+                  <CheckCircle color="primary" />
                 </ListItemIcon>
               )}
             </ListItemButton>
