@@ -1,11 +1,11 @@
 export type Year = number
 type Price = number
-type ServiceName = 'Internet' | 'Telewizja' | 'Abonament telefoniczny' | 'Dekoder 4K'
+export type ServiceName = 'Internet' | 'Telewizja' | 'Abonament telefoniczny' | 'Dekoder 4K'
 
 export interface Service {
   name: ServiceName
   prices: Record<Year, Price>
-  selected?: boolean
+  selected: boolean
   dependecy?: ServiceName
 }
 
@@ -17,6 +17,7 @@ export const DEFAULT_SERVICES: Service[] = [
       2024: 49,
       2025: 59
     },
+    selected: false,
   },
   {
     name: 'Telewizja',
@@ -25,6 +26,7 @@ export const DEFAULT_SERVICES: Service[] = [
       2024: 49,
       2025: 59
     },
+    selected: false,
   },
   {
     name: 'Abonament telefoniczny',
@@ -33,6 +35,7 @@ export const DEFAULT_SERVICES: Service[] = [
       2024: 29,
       2025: 29
     },
+    selected: false,
   },
   {
     name: 'Dekoder 4K',
@@ -41,6 +44,7 @@ export const DEFAULT_SERVICES: Service[] = [
       2024: 29,
       2025: 29
     },
+    selected: false,
     dependecy: 'Telewizja'
   }
 ]
