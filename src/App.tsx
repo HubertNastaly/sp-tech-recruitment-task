@@ -30,6 +30,14 @@ function App() {
       selected: false
     }
     setServices(services => [...services, newService])
+  }, [setServices, years])
+
+  const updateService = useCallback((serviceId: number, updatedService: Service) => {
+    setServices(services => {
+      const newServices = [...services]
+      newServices[serviceId] = updatedService
+      return newServices
+    })
   }, [setServices])
 
   return (
@@ -42,6 +50,7 @@ function App() {
           services={services}
           onServiceSelectToggle={toggleSelect}
           onServiceAdd={addService}
+          onServiceUpdate={updateService}
         />
         <SelectedServicesList year={selectedYear} services={services} />
       </Box>
