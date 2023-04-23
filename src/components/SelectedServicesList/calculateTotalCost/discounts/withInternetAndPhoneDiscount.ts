@@ -1,5 +1,5 @@
 import { Price, Service, Year } from "../../../../model"
-import { totalCost } from "./utils"
+import { totalCost } from "../../../../utils"
 
 const INTERNET_AND_PHONE_SPECIAL_PRICE: Price = 64
 

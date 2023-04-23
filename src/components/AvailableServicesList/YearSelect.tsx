@@ -1,8 +1,6 @@
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material"
 import { Year } from "../../model"
 
-export const DEFAULT_YEARS: Year[] = [2023, 2024, 2025]
-
 interface Props {
   years: Year[]
   onChange: (year: Year) => void

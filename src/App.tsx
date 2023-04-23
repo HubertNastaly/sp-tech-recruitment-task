@@ -2,8 +2,7 @@ import { Box, Container } from "@mui/material"
 import { AvailableServicesList } from "./components/AvailableServicesList"
 import { SelectedServicesList } from "./components/SelectedServicesList"
 import { useCallback, useState } from "react"
-import { DEFAULT_SERVICES, Service, Year } from "./model"
-import { DEFAULT_YEARS } from "./components/AvailableServicesList/YearSelect"
+import { DEFAULT_SERVICES, DEFAULT_YEARS, Service, Year } from "./model"
 
 function App() {
   const [years] = useState(DEFAULT_YEARS)

@@ -1,5 +1,5 @@
 import { Price, Service, Year } from "../../../../model"
-import { totalCost } from "./utils"
+import { totalCost } from "../../../../utils"
 
 const INTERNET_AND_TV_DISCOUNT_PRICES: Record<Year, Price> = {
   2023: 79,

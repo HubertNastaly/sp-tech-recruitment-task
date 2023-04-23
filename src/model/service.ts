@@ -2,6 +2,8 @@ export type Year = number
 export type Price = number
 export type ServiceName = string
 
+export const DEFAULT_YEARS: Year[] = [2023, 2024, 2025]
+
 export interface Service {
   name: ServiceName
   prices: Record<Year, Price>
