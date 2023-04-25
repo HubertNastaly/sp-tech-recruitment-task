@@ -1,7 +1,7 @@
 import { Box, Divider, IconButton, List, ListItem, ListItemButton, ListItemText, Paper, TextField, colors } from "@mui/material"
 import { useCallback, useState } from "react"
 import { Service, Year } from "../../model"
-import { Check, Edit } from "@mui/icons-material"
+import { Check, Close, Edit } from "@mui/icons-material"
 import { YearSelect } from "./YearSelect"
 import { ServiceInput } from "./ServiceInput"
 
@@ -52,14 +52,19 @@ export const AvailableServicesList = ({ selectedYear, years, onServiceSelectTogg
       <YearSelect years={years} onChange={onYearChange} />
       <List>
         {services.map((service, index) => (
-          <ListItem key={service.name} sx={{ outline: service.selected ? `1px solid ${colors.blue[600]}` : 'none', marginBottom: 1 }} secondaryAction={index !== editedServiceId ? (
+          <ListItem key={service.name} sx={{ outline: service.selected ? `1px solid ${colors.blue[600]}` : 'none', marginBottom: 1, paddingRight: 12 }} secondaryAction={index !== editedServiceId ? (
             <IconButton onClick={() => handleEditClick(index)} edge="end">
               <Edit />
             </IconButton>
           ) : (
-            <IconButton onClick={() => handleUpdateService(editedServiceName, Number(editedServicePrice))} edge="end">
-              <Check />
-            </IconButton>
+            <>
+              <IconButton onClick={() => handleUpdateService(editedServiceName, Number(editedServicePrice))} edge="end">
+                <Check />
+              </IconButton>
+              <IconButton onClick={() => setEditedServiceId(null)} edge="end" sx={{ marginLeft: 2 }}>
+                <Close />
+              </IconButton>
+            </>
           )}>
               {index === editedServiceId ? (
                 <Box sx={{ display: 'flex', gap: 1, marginTop: 1, marginBottom: 1 }}>
