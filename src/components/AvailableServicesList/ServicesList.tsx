@@ -61,8 +61,8 @@ export const ServicesList = ({ services, selectedYear, onServiceUpdate, onServic
         )}>
             {index === editedServiceId ? (
               <Box sx={{ display: 'flex', gap: 1, marginTop: 1, marginBottom: 1 }}>
-                <TextField label="Usługa" value={editedServiceName} onChange={({ target: { value }}) => setEditedServiceName(value)} />
-                <TextField label="Cena" value={editedServicePrice} onChange={({ target: { value }}) => setEditedServicePrice(value)} />
+                <TextField label="Usługa" value={editedServiceName} onChange={({ target: { value }}) => setEditedServiceName(value)} sx={{ flex: 2 }} />
+                <TextField label="Cena" value={editedServicePrice} onChange={({ target: { value }}) => setEditedServicePrice(value)} sx={{ flex: 1 }} />
               </Box>
             ) : (
               <ListItemButton disabled={!canSelectService(service)} disableRipple onClick={() => onServiceSelectToggle(service)} sx={{ gap: 2 }}>
