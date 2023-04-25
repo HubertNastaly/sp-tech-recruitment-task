@@ -5,7 +5,7 @@ import { useCallback, useState } from "react"
 import { DEFAULT_SERVICES, DEFAULT_YEARS, Service, Year } from "./model"
 
 function App() {
-  const [years] = useState(DEFAULT_YEARS)
+  const [years, setYears] = useState(DEFAULT_YEARS)
   const [selectedYear, setSelectedYear] = useState<Year>(DEFAULT_YEARS[0])
   const [services, setServices] = useState(DEFAULT_SERVICES)
 
@@ -39,6 +39,14 @@ function App() {
     })
   }, [setServices])
 
+  const addYear = useCallback((newYear: Year) => {
+    setYears(years => [...years, newYear].sort())
+    setServices(services => services.map(service => {
+      const updatedService: Service = { ...service, prices: { ...service.prices, [newYear]: 0 } }
+      return updatedService
+    }))
+  }, [setYears])
+
   return (
     <Container maxWidth="lg">
       <Box sx={{ maxHeight: '100vh', width: '100%', marginTop: 8, display: 'flex', gap: 8 }}>
@@ -50,6 +58,7 @@ function App() {
           onServiceSelectToggle={toggleSelect}
           onServiceAdd={addService}
           onServiceUpdate={updateService}
+          onYearAdd={addYear}
         />
         <SelectedServicesList year={selectedYear} services={services} />
       </Box>

@@ -1,7 +1,7 @@
 import { Box, Divider, IconButton, List, ListItem, ListItemButton, ListItemText, Paper, TextField, colors } from "@mui/material"
 import { useCallback, useState } from "react"
 import { Service, Year } from "../../model"
-import { Check, Close, Edit } from "@mui/icons-material"
+import { AddCircle, Check, Close, Edit } from "@mui/icons-material"
 import { YearSelect } from "./YearSelect"
 import { ServiceInput } from "./ServiceInput"
 
@@ -13,12 +13,15 @@ interface Props {
   onServiceSelectToggle: (service: Service) => void
   onServiceAdd: (serviceName: string) => void
   onServiceUpdate: (serviceId: number, service: Service) => void
+  onYearAdd: (newYear: Year) => void
 }
 
-export const AvailableServicesList = ({ selectedYear, years, onServiceSelectToggle, onYearChange, services, onServiceAdd, onServiceUpdate }: Props) => {
+export const AvailableServicesList = ({ selectedYear, years, onServiceSelectToggle, onYearChange, services, onServiceAdd, onServiceUpdate, onYearAdd }: Props) => {
   const [editedServiceId, setEditedServiceId] = useState<number | null>(null)
   const [editedServiceName, setEditedServiceName] = useState<string | null>(null)
   const [editedServicePrice, setEditedServicePrice] = useState<string | null>(null)
+
+  const [newYear, setNewYear] = useState<Year | null>(null)
 
   const canSelectService = useCallback((service: Service) => {
     const dependency = services.find(({ name }) => service.dependecy === name)
@@ -47,9 +50,35 @@ export const AvailableServicesList = ({ selectedYear, years, onServiceSelectTogg
     onServiceUpdate(editedServiceId, updatedService)
   }, [editedServiceId, onServiceUpdate, services, selectedYear])
 
+  const handleAddYear = useCallback((addedYear: Year) => {
+    onYearAdd(addedYear)
+    setNewYear(null)
+  }, [onYearAdd, setNewYear])
+
   return (
     <Paper sx={{ flex: 1, padding: 4 }}>
-      <YearSelect years={years} onChange={onYearChange} />
+      {/* TODO: extract */}
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        {newYear === null ? (
+          <>
+            <YearSelect years={years} onChange={onYearChange} />
+            <IconButton onClick={() => setNewYear(years[years.length - 1] + 1)} title="Dodaj rok" sx={{ marginLeft: 1 }}>
+              <AddCircle />
+            </IconButton>
+          </>
+        ) : (
+          <>
+            <TextField label="Rok" value={newYear} onChange={({ target: { value }}) => setNewYear(Number(value))} type="number" sx={{ flex: 1 }} />
+            <IconButton onClick={() => handleAddYear(Number(newYear))} disabled={years.includes(newYear)}>
+              <Check />
+            </IconButton>
+            <IconButton onClick={() => setNewYear(null)}>
+              <Close />
+            </IconButton>
+          </>
+        )}
+      </Box>
+      <Divider sx={{ marginTop: 4, marginBottom: 2 }} />
       <List>
         {services.map((service, index) => (
           <ListItem key={service.name} sx={{ outline: service.selected ? `1px solid ${colors.blue[600]}` : 'none', marginBottom: 1, paddingRight: 12 }} secondaryAction={index !== editedServiceId ? (
@@ -79,7 +108,7 @@ export const AvailableServicesList = ({ selectedYear, years, onServiceSelectTogg
           </ListItem>
         ))}
       </List>
-      <Divider sx={{ marginTop: 4, marginBottom: 4 }}/>
+      <Divider sx={{ marginTop: 2, marginBottom: 4 }}/>
       <ServiceInput onServiceAdd={onServiceAdd} />
     </Paper>
   )
