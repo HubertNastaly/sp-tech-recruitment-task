@@ -11,7 +11,8 @@ export function withInternetAndTVDiscount(selectedServices: Service[], year: Yea
   const canApplyDiscount = selectedServices.find(({ name }) => name === 'Internet') && selectedServices.find(({ name }) => name === 'Telewizja')
   if(canApplyDiscount) {
     const regularCostServices = selectedServices.filter(({ name }) => name !== 'Internet' && name !== 'Telewizja' && name !== 'Dekoder 4K')
-    return totalCost(regularCostServices, year) + INTERNET_AND_TV_DISCOUNT_PRICES[year]
+    const internetAndTvDiscountPrice = INTERNET_AND_TV_DISCOUNT_PRICES[year] ?? 0
+    return totalCost(regularCostServices, year) + internetAndTvDiscountPrice
   }
   return totalCost(selectedServices, year)
 }
