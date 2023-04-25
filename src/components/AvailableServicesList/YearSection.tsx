@@ -1,6 +1,6 @@
 import { Box, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material"
 import { Year } from "../../model"
-import { useCallback, useState } from "react"
+import { useState } from "react"
 import { AddCircle, Check, Close } from "@mui/icons-material"
 
 interface Props {
@@ -16,10 +16,13 @@ export const YearSection = ({ onYearAdd, onYearChange, years }: Props) => {
     onYearChange(value as Year)
   }
 
-  const handleAddYear = useCallback((addedYear: Year) => {
-    onYearAdd(addedYear)
+  function handleAddYear () {
+    if(!newYear) {
+      return
+    }
+    onYearAdd(newYear)
     setNewYear(null)
-  }, [onYearAdd, setNewYear])
+  }
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -40,7 +43,7 @@ export const YearSection = ({ onYearAdd, onYearChange, years }: Props) => {
       ) : (
         <>
           <TextField label="Rok" value={newYear} onChange={({ target: { value }}) => setNewYear(Number(value))} type="number" sx={{ flex: 1 }} />
-          <IconButton onClick={() => handleAddYear(Number(newYear))} disabled={years.includes(newYear)}>
+          <IconButton onClick={handleAddYear} disabled={years.includes(newYear)}>
             <Check />
           </IconButton>
           <IconButton onClick={() => setNewYear(null)}>
