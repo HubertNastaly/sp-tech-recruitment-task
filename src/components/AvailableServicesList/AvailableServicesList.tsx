@@ -1,8 +1,8 @@
 import { Box, Divider, IconButton, List, ListItem, ListItemButton, ListItemText, Paper, TextField, colors } from "@mui/material"
 import { useCallback, useState } from "react"
 import { Service, Year } from "../../model"
-import { AddCircle, Check, Close, Edit } from "@mui/icons-material"
-import { YearSelect } from "./YearSelect"
+import { Check, Close, Edit } from "@mui/icons-material"
+import { YearSection } from "./YearSection"
 import { ServiceInput } from "./ServiceInput"
 
 interface Props {
@@ -20,8 +20,6 @@ export const AvailableServicesList = ({ selectedYear, years, onServiceSelectTogg
   const [editedServiceId, setEditedServiceId] = useState<number | null>(null)
   const [editedServiceName, setEditedServiceName] = useState<string | null>(null)
   const [editedServicePrice, setEditedServicePrice] = useState<string | null>(null)
-
-  const [newYear, setNewYear] = useState<Year | null>(null)
 
   const canSelectService = useCallback((service: Service) => {
     const dependency = services.find(({ name }) => service.dependecy === name)
@@ -50,34 +48,13 @@ export const AvailableServicesList = ({ selectedYear, years, onServiceSelectTogg
     onServiceUpdate(editedServiceId, updatedService)
   }, [editedServiceId, onServiceUpdate, services, selectedYear])
 
-  const handleAddYear = useCallback((addedYear: Year) => {
-    onYearAdd(addedYear)
-    setNewYear(null)
-  }, [onYearAdd, setNewYear])
-
   return (
     <Paper sx={{ flex: 1, padding: 4 }}>
-      {/* TODO: extract */}
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-        {newYear === null ? (
-          <>
-            <YearSelect years={years} onChange={onYearChange} />
-            <IconButton onClick={() => setNewYear(years[years.length - 1] + 1)} title="Dodaj rok" sx={{ marginLeft: 1 }}>
-              <AddCircle />
-            </IconButton>
-          </>
-        ) : (
-          <>
-            <TextField label="Rok" value={newYear} onChange={({ target: { value }}) => setNewYear(Number(value))} type="number" sx={{ flex: 1 }} />
-            <IconButton onClick={() => handleAddYear(Number(newYear))} disabled={years.includes(newYear)}>
-              <Check />
-            </IconButton>
-            <IconButton onClick={() => setNewYear(null)}>
-              <Close />
-            </IconButton>
-          </>
-        )}
-      </Box>
+      <YearSection
+        years={years}
+        onYearAdd={onYearAdd}
+        onYearChange={onYearChange}
+      />
       <Divider sx={{ marginTop: 4, marginBottom: 2 }} />
       <List>
         {services.map((service, index) => (
